@@ -26,7 +26,7 @@ export function SignIn() {
   return (
     <Container>
       <div>
-        <img src="./src/assets/foodexplorer.png" alt="Logo" />
+        <img src="../src/assets/foodexplorer.png" alt="Logo" />
         <h1>Food Explorer</h1>
 
       </div>

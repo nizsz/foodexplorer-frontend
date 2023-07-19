@@ -52,7 +52,7 @@ export function Home () {
       <main>
         <Content>
 
-        <img src="./src/assets/ui.png" alt="" />
+        <img src="./src/assets/backgroundImage.png" alt="" />
        
           
         <Category title = "Refeições">
