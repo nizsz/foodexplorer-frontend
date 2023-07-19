@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import {useAuth} from "../../hooks/auth";
 import { useState } from "react";
-import FoodExplorerImg from "../assets/foodexplorer.png";
+import FoodExplorerImg from "../../assets/foodexplorer.png";
 
 
 export function Header({search}){
