@@ -28,16 +28,6 @@ export function Header({search}){
     navigate("/")
   };
 
-  function testes () {
-    return (
-      <Menu 
-        
-      >
-
-      </Menu>
-    )
-  }
-
   return (
     <Container>
       
