@@ -2,13 +2,14 @@ import { Container,Form } from "./styles";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { FoodExplorerImg } from "../../components/FoodExplorerImg"
 
 import {Section} from "../../components/Section";
 
 import { useState } from "react";
 import { api } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
+
+import FoodExplorerImg from "../../assets/foodexplorer.png";
 
 export function SignUp() {
   const [name,setName] = useState("");
@@ -45,8 +46,7 @@ export function SignUp() {
   return (
     <Container>
       <div>
-        <FoodExplorerImg />
-        <img src="./src/assets/foodexplorer.png" alt="Logo" />
+        <img src={FoodExplorerImg} alt="Logo" />
         <h1>Food Explorer</h1>
 
       </div>

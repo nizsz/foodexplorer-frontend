@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
 import { useState } from "react";
 
+import FoodExplorerImg from "../../assets/foodexplorer.png";
 
 export function SignIn() {
   const {signIn} = useAuth();
@@ -26,7 +27,7 @@ export function SignIn() {
   return (
     <Container>
       <div>
-        <img src="../src/assets/foodexplorer.png" alt="Logo" />
+        <img src={FoodExplorerImg} alt="Logo" />
         <h1>Food Explorer</h1>
 
       </div>
