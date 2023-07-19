@@ -1,33 +1,69 @@
 import {Container,Logout} from "./styles";
 import {Button} from "../Button"
+import { Menu } from "../Menu";
 import {Input} from "../Input"
 
 import {RiSearchLine} from "react-icons/ri";
-import {FiLogOut} from "react-icons/fi";
-import { Link } from "react-router-dom";
+import {BsReceipt} from "react-icons/bs"; 
+import {FiLogOut, FiMenu} from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
 
 import {useAuth} from "../../hooks/auth";
-import { useEffect, useState } from "react";
-import { api } from "../../services/api";
+import { useState } from "react";
+
 
 export function Header({search}){
-  const {signOut} = useAuth();
+  const {user, signOut} = useAuth();
+  const admin = user.email.match(/admin/) == "admin" ?? "Admin"
 
+  const [sidebar, setSidebar] = useState(false)
+
+  const showMe = () => setSidebar(!sidebar)
+  
+  const navigate = useNavigate();
+  
+  function handleSignOut() {
+    signOut();
+    navigate("/")
+  };
+
+  function testes () {
+    return (
+      <Menu 
+        
+      >
+
+      </Menu>
+    )
+  }
 
   return (
     <Container>
-      <img src="../src/assets/logoAdmin.svg" alt="Logo de administrador" />
+      
+      <FiMenu size={30} className="menu" onClick={showMe}/>
+      {sidebar && <Menu active = {setSidebar} onChange = {event => {search(event.target.value)}} />}     
+        <header>
+          <img src="../src/assets/foodexplorer.png" alt="foodexplorer" />
+          {!admin ? <h2>Food explorer</h2> : <h2>Food explorer <span>admin</span></h2>}
+        </header>
+      <BsReceipt size={30} className={admin ? "hide" : "receipt"}/>
         <Input 
+          className = "search"
           placeholder = "Busque por pratos ou ingredientes" 
           icon={RiSearchLine}
           onChange = {event => {search(event.target.value)}}
         />
       
-      <Link to = "/newdish">
-        <Button title= "Novo prato" />
-      </Link>
-
-      <Logout onClick={signOut}>
+      { admin ?
+        <Link to = "/newdish">
+          <Button title= "Novo prato" />
+        </Link>
+              :
+        <Link>
+          <Button icon = {BsReceipt} title = "pedidos(0)" />
+        </Link>
+    }
+      <Logout onClick={handleSignOut}>
         <FiLogOut size={30}/>
       </Logout>
     </Container>

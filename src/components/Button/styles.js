@@ -16,6 +16,12 @@ export const Container = styled.button`
   border: none;
   height: 4.8rem;
 
+  display:flex ;
+  
+  >svg {
+    margin-right: .8rem ;
+  }
+
   &:disabled {
     opacity: 0.5;
   }

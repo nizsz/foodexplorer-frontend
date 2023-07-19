@@ -25,9 +25,29 @@ export const Container = styled.div`
       color: ${({theme}) => theme.COLORS.WHITE_200};
     }
 
-    button:last-child{
+   // button:last-child{
+    //margin-top: 4.8rem;
+  //}
+
+  a {
     margin-top: 4.8rem;
+
+    display: flex;
+    align-items:center;
+
+    strong {
+      display: flex;
+      align-items: center;
+      padding: 0 1.2rem;
+
+      font-size: 2.5rem;
+      font-weight: 500;
+
+      color: ${({theme}) => theme.COLORS.WHITE_200};
+      
+    }
   }
+
   }
 
   >img {
@@ -43,4 +63,58 @@ export const Container = styled.div`
   }
 
   
-`
+  @media(max-width:700px) {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    align-self: center;
+
+    >img {
+      width: 30rem;
+      height: 30rem;
+    }
+
+    >main {
+      place-items: center;
+
+      p {
+        margin: .4rem 0 2.4rem; 
+      }
+
+      section {
+        display: flex;
+        flex-wrap: wrap;
+        width: 25rem;
+        
+      }
+
+      a {
+        margin-top: 1.8rem;
+        button {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+    }
+  }
+`;
+
+export const Add = styled.button`
+  background: none;
+  border: none;
+
+  >svg {
+    margin-right: 3.3rem;
+    color: ${({theme}) => theme.COLORS.WHITE_100};
+  }
+`;
+
+export const Subtract = styled.button`
+  background: none;
+  border: none;
+
+  >svg {
+    color: ${({theme}) => theme.COLORS.WHITE_100};
+    
+  }
+`;

@@ -155,4 +155,35 @@ export const Form = styled.form`
     place-self: end;
   }
 
+  @media (max-width: 700px) {
+    padding: 3.2rem;
+
+    .elements {
+      gap: 2rem;
+
+      grid-template-areas: 
+        "image image image"
+        "name name name"
+        "category category category"
+        "ingredients ingredients ingredients"
+        "price price price"
+        "textarea textarea textarea"
+      ;
+
+     .name, .price , .ingredients,section label, textarea {
+        background-color: ${({theme}) => theme.COLORS.BACKGROUND_200};
+      }
+    }
+
+    >button:last-child{
+    background-color: ${({theme}) => theme.COLORS.TOMATO};
+
+    margin-top: 3.2rem;
+
+    place-self: center;
+    justify-content: center;
+
+    width: 100%;
+  }
+  }
   `;

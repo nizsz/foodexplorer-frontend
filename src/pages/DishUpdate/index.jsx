@@ -11,14 +11,16 @@ import {Button} from "../../components/Button"
 import {Footer} from "../../components/Footer"
 import {Input} from "../../components/Input"
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/auth";
 
 export function DishUpdate () {
+  const [data, setData] = useState(null);
+  
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -26,20 +28,15 @@ export function DishUpdate () {
 
   const [ingredients, setIngredients] = useState([]);
   const [newIngredient, setNewIngredient] = useState("");
+  const [oldIngredients, setOldIngredients] = useState([]);
 
   const [avatar, setAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
 
   const navigate = useNavigate();
+  const params = useParams();
 
-  const {dish, user} = useAuth()
-
-  async function baby () {
-    const response = await api.get("/dishes/117")
-    console.log(response.data)
-  };
-
-  baby()
+  
 
   function handleAddIngredient(){
     setIngredients(prevState => [...prevState, newIngredient]);
@@ -58,43 +55,108 @@ export function DishUpdate () {
     setAvatar(imagePreview);
   };
 
-  async function handleUpdateDish(){
-    if(!title) {
-      return alert("Por favor insira um nome para o prato")
-    };
 
-    if(!category) {
-      return alert("Por favor selecione uma categoria para o prato")
-    };
+  async function removeOldIngredient (deleted) {
+    setOldIngredients(oldIngredients.filter(
+      oldIngredient => oldIngredient.name !== deleted ? api.delete(`/ingredients`) : ""
+    ))
+      
+  };
 
-    if(!price) {
-      return alert("Por favor insira um preço para o prato")
-    };
+  function removeOneIngredient (deleted) {
+     setOldIngredients(oldIngredients.filter(
+       async oldIngredient => {
+        if(oldIngredient.name || oldIngredient.id !== deleted) {
+          await api.delete(`/ingredients`);
+        }
+      }
+    ))
+      
+  };
 
-    if(!description) {
-      return alert("Por favor insira uma descrição para o prato")
-    };
 
+  async function handleRemoveDish () {
+    const confirm = window.confirm("Você realmente deseja excluir o prato!");
+
+    if(confirm) {
+      await api.delete(`/dishes/${params.id}`);
+      navigate("/");
+    }
+  };
+
+
+  async function updateDish() {
     if(newIngredient) {
       return alert("Há um ingrediente que não foi adicionado, para adicionar clique no botão de '+' caso contrário clique no botão 'X' para remover o ingrediente ")
     };
 
-    await api.put("/dishes/:id", {
+    const dish = {
       title,
-      description,
-      price,
       category,
       ingredients,
-      avatar: avatarFile
-    })
+      price,
+      description
+    };
 
-    alert("Prato atualizado com sucesso");
-    navigate(-1);
+    try {
+      
+      if(avatarFile) {
+        const fileUploadForm = new FormData();
+        fileUploadForm.append("avatar", avatarFile);
+
+        const response = await api.patch(`/dishes/avatar/${params.id}`, fileUploadForm);
+        dish.avatar = response.data.avatar;
+        
+      }
+
+      await api.put(`/dishes/${params.id}`, dish);
+      
+      setData({dish, token: data.token});
+
+      alert("Prato Atualizado com sucesso");
+      navigate("/");
+
+    } catch (error) {
+      if (error.response) {
+        return alert(error.response.data.message)
+      } else {
+        return alert("Não foi possível atualizar o prato.")
+      }
+    };
+
+  
   };
 
+  function teste (event) {
+    const price = Number(event.target.value);
+    const priceInFormatBRL = price.toLocaleString('pt-br', {minimumFractionDigits: 2})
+    
+    setPrice(priceInFormatBRL);  
+
+  }
+
+  console.log(price.length> 2)
+
+  
+  
+  useEffect(() => {
+    async function fetchDish(){
+      const response = await api.get(`/dishes/${params.id}`)
+      setData(response.data)
+      setOldIngredients(response.data.ingredients)
+    };
+
+    fetchDish()
+  },[])
+  
+ 
+
+  
   return (
     <Container>
       <Header />
+      {
+        data &&
         <main>
           <Form>
             <header>
@@ -106,10 +168,11 @@ export function DishUpdate () {
 
             <div className="elements">
               <Section title="Imagem do prato">
-                <label htmlFor="avatar"><RiUpload2Line size={30}/> Selecione Imagem do prato</label>
+                <label htmlFor="avatar" name="avatar"><RiUpload2Line size={30}/> Selecione Imagem do prato</label>
                 <input 
                   type="file" 
                   id="avatar"
+                  name="avatar"
                   onChange={handleChangeAvatar}
                 />
               </Section>
@@ -117,8 +180,9 @@ export function DishUpdate () {
               <Section title = "Nome">
                 <Input 
                   type = "text"
-                  placeholder = "Ex.: Salada Ceasar"
+                  placeholder = {`${data.title}`}
                   onChange = {event => setTitle(event.target.value)}
+                  className = "name"
                 />
               </Section>
 
@@ -147,6 +211,19 @@ export function DishUpdate () {
                     ))
 
                   }
+
+                  { 
+                    oldIngredients.map((ingredient , index) => (
+                    <NoteItem 
+                      key={String(index)}
+                      value= {ingredient.name}
+                      onClick={() => removeOldIngredient(ingredient.name || ingredient.id)}
+                    />
+
+                    ))
+                  }
+
+     
                   <NoteItem 
                     isNew 
                     placeholder = "Adicionar" 
@@ -162,26 +239,35 @@ export function DishUpdate () {
                   type = "number"
                   placeholder = "R$00,00"
                   onChange = {event => setPrice(event.target.value)}
+                  className = "price"
+          
                 />
               </Section>
               
               <Section title = "Descrição">
                 <Textarea 
-                  placeholder = "Fale brevemente sobre o prato, seus ingredientes e composição"
+                  placeholder = {data.description}
                   onChange = {event => setDescription(event.target.value)}
+                  
                 />
               </Section>
             </div>
 
             <div className="buttons">
-              <Button title = "Excluir prato" />
+              <Button 
+                title = "Excluir prato" 
+                onClick = {handleRemoveDish}
+              />
               <Button 
                 title = "Salvar alterações"
-                onClick = {handleUpdateDish}
+                //onClick = {() => handleUpdate(data.id)}
+                onClick = {updateDish}
               />
             </div>
           </Form>
         </main>
+        
+      }
       <Footer />
     </Container>
   )

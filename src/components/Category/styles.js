@@ -15,7 +15,7 @@ export const Container = styled.section`
 
   >main {
     
-    max-width: 900px;
+    max-width: 1100px;
     
     display: flex;
     cursor: grab;
@@ -24,6 +24,14 @@ export const Container = styled.section`
     div{
       display: flex;
       gap: 2.5rem;
+    }
+
+  }
+
+  @media(max-width:700px) {
+  
+    >main {
+      max-width: 50rem;
     }
   }
 `;

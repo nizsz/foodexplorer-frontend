@@ -9,7 +9,14 @@ export const Container = styled.span`
   padding: .4rem .8rem;
   border-radius: .5rem;
   margin-right: 1.2rem;
-
+  
   background-color: ${({theme}) => theme.COLORS.BACKGROUND_50};
   white-space: nowrap;
+
+  @media (max-width: 700px) {
+    margin-bottom: 2rem;
+    
+  }
+
+  
 `;

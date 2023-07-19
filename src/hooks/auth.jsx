@@ -3,9 +3,19 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext({});
 
 import { api } from "../services/api";
+import { useParams } from "react-router-dom";
 
 function AuthProvider({ children }) {
   const [data,setData] = useState({});
+  const [admin, setAdmin] = useState({});
+  const [teste, setTeste] = useState()
+ 
+  const params = useParams();
+  
+
+
+  const isAdmin = String(admin.email).match(/admin/) == "admin";
+
 
   async function signIn ({email, password}) {
 
@@ -31,26 +41,26 @@ function AuthProvider({ children }) {
   };
   
   function signOut () {
-    localStorage.removeItem("@foodexplorer:user");
-    localStorage.removeItem("@foodexplorer:token");
+    localStorage.removeItem("@food-explorer:user");
+    localStorage.removeItem("@food-explorer:token");
 
     setData({});
   };
 
-  async function updateProfile({ dish, avatarFile }){
+  async function updateProfile({ dish, avatarFile}){
     try {
-
+      
       if(avatarFile) {
         const fileUploadForm = new FormData();
         fileUploadForm.append("avatar", avatarFile);
 
-        const response = await api.patch("/dishes/avatar/:id", fileUploadForm);
+        const response = await api.patch(`/dishes/avatar/${params.id}`, fileUploadForm);
         dish.avatar = response.data.avatar;
         
       }
 
-      await api.put("/dishes/:id", dish)
-
+      await api.put(`/dishes/${params.id}`, dish)
+      
       setData({dish, token: data.token})
     } catch (error) {
       if (error.response) {
@@ -60,6 +70,7 @@ function AuthProvider({ children }) {
       }
     };
   };
+
 
   useEffect(() => {
     const user = localStorage.getItem("@food-explorer:user");
@@ -72,16 +83,24 @@ function AuthProvider({ children }) {
         user: JSON.parse(user),
         token
       })
-    };
-  },[])
 
+      setAdmin({
+        email: JSON.parse(user).email,
+        token
+      })
+
+    };
+  },[]);
+
+  
   return (
     <AuthContext.Provider value=
     {{
       signIn,
       signOut, 
       updateProfile,
-      user: data.user
+      user: data.user,
+      isAdmin
     }}>
       {children}
     </AuthContext.Provider>

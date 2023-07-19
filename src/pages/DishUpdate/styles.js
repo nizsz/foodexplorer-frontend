@@ -163,4 +163,43 @@ export const Form = styled.form`
     }
   }
 
+  @media (max-width: 700px) {
+    padding: 3.2rem;
+
+    .elements {
+      gap: 2rem;
+
+      grid-template-areas: 
+        "image image image"
+        "name name name"
+        "category category category"
+        "ingredients ingredients ingredients"
+        "price price price"
+        "textarea textarea textarea"
+      ;
+
+      .name, .price, section label, textarea {
+        background-color: ${({theme}) => theme.COLORS.BACKGROUND_200};
+      }
+
+      .ingredients {
+        background-color: ${({theme}) => theme.COLORS.BACKGROUND_200};
+      }
+    }
+
+   .buttons {
+    justify-content: space-between;
+
+    button:first-child{
+      justify-content: center;
+      width: 50%;
+    }
+
+    button:last-child{
+      justify-content: center;
+      width: 50%;
+    }
+   }
+  }
+
   `;

@@ -17,6 +17,13 @@ export const Container = styled.div`
     overflow-y: auto;
   }
 
+  @media(max-width: 700px) {
+
+    >main {
+      display: grid;
+      
+    }
+  }
 `;
 
 export const Content = styled.div`
@@ -33,5 +40,14 @@ export const Content = styled.div`
   >a {
     margin-bottom: 4.2rem;
   }
+
+  @media(max-width: 700px) {
+    width: 500px;
+    justify-self: center;
+    padding: 5rem 5.6rem;
+    margin: 0;
+  
+  }
+
   
 `;

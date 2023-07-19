@@ -3,7 +3,7 @@ import styled from "styled-components"
 export const Container = styled.div `
   width: 100%;
   height: 100vh;
-
+  animation: day 7s infinite;
   padding: 0 13.6rem;
 
   display: flex;
@@ -22,7 +22,46 @@ export const Container = styled.div `
     font-weight: 700 ;
 
     white-space: nowrap;
+
+    animation:colorNight 7s infinite ;
   }
+  }
+
+
+  @keyframes day {
+    0% {
+      background-color: #fff;
+    }
+
+    50%{
+      background-color: #000;
+    }
+
+    100%{
+      background-color: white;
+    }
+  }
+
+  @keyframes colorNight {
+    0% {
+      color: #000;
+    }
+
+    50%{
+      color: white;
+    }
+
+    100%{
+      color: #000;
+    }
+  }
+
+  @media(max-width:900px) {
+    display: grid;
+    flex-direction: column;
+
+    padding: 0 1rem;
+
   }
 `;
 
@@ -35,7 +74,9 @@ export const Form = styled.form`
   gap: 3.2rem;
   
   background-color: ${({theme}) => theme.COLORS.BACKGROUND_300};
+  animation: background 7s infinite backwards;
 
+  
   padding: 6.4rem;
   border-radius: 1.6rem;
 
@@ -46,6 +87,8 @@ export const Form = styled.form`
     text-align: center;
 
     color: ${({theme}) => theme.COLORS.WHITE_200};
+
+    
   }
 
   >a {
@@ -57,6 +100,38 @@ export const Form = styled.form`
   }
 
   >.enter {
+    justify-content: center;
     width: 100%;
   }
+
+  @keyframes background {
+    0%{
+      background:${({theme}) => theme.COLORS.BACKGROUND_500};
+      
+    } 
+
+    50%{
+      background:${({theme}) => theme.COLORS.BACKGROUND_300} ;
+    
+    }
+
+    100%{
+      background:${({theme}) => theme.COLORS.BACKGROUND_500} ;
+    }
+  }
+
+
+  @media(max-width:900px) {
+    background: none;
+    animation: none;
+    
+    padding: 6rem 1rem;
+
+    >h2, a, span{
+      animation: colorNight 7s infinite;
+    }
+  }
+  
+
+ 
 ` 

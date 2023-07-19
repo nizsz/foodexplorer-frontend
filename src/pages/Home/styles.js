@@ -29,5 +29,15 @@ export const Content = styled.div`
     width: 100%;
   }
 
+  .hide {
+    display: none;
+  }
+
+  @media(max-width:700px) {
+
+    padding: 0 6rem;
+
+  }
+
 
 `

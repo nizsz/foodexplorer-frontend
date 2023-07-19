@@ -24,6 +24,28 @@ export const Container = styled.div `
     white-space: nowrap;
   }
   }
+
+  @keyframes pulsation {
+    0%{
+      scale: 1.1;
+    }
+
+    50%{
+      scale: 0.7;
+    }
+
+    100%{
+      scale: 1.1;
+    }
+
+  }
+
+  @media(max-width:900px) {
+    display: grid;
+    flex-direction: column;
+
+    padding: 0 1rem;
+  }
 `;
 
 export const Form = styled.form`  
@@ -54,9 +76,18 @@ export const Form = styled.form`
 
     font-size: 1.4rem;
     font-weight: 500;
+    animation: pulsation 1s infinite backwards;
   }
 
   >.create-account {
     width: 100%;
+    justify-content: center;
   }
+
+  @media(max-width:900px) {
+    background: none;
+    
+    padding: 6rem 1rem;
+  }
+  
 ` 

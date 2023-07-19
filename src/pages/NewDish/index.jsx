@@ -64,20 +64,20 @@ export function NewDish () {
       return alert("Há um ingrediente que não foi adicionado, para adicionar clique no botão de '+' caso contrário clique no botão 'X' para remover o ingrediente ")
     };
     
-    const formData = new FormData();
-
-    formData.append("avatar", avatar)
-    const dish = {
-      title,
-      description,
-      price,
-      category,
-      ingredients
-    }
-
-    //await api.post("/dishes", dish) 
-    await api.post(`/dishes`, dish);
     
+   
+    const formData = new FormData();
+    formData.append("title", title)
+    formData.append("description", description)
+    formData.append("price", price)
+    formData.append("category", category)
+    formData.append("avatar", avatarFile)
+
+    ingredients.map(ingredient => (
+      formData.append("ingredients", ingredient)
+    ))
+    
+    await api.post(`/dishes`, formData);
     alert("Prato criado com sucesso");
     navigate(-1);
   };
@@ -91,7 +91,7 @@ export function NewDish () {
               <Link to = "/">
                 <ButtonText title= "Voltar"/>
               </Link>
-              <h1>Adicionar prato</h1>
+              <h1>Novo prato</h1>
             </header>
 
             <div className="elements">
@@ -109,6 +109,7 @@ export function NewDish () {
                   type = "text"
                   placeholder = "Ex.: Salada Ceasar"
                   onChange = {event => setTitle(event.target.value)}
+                  className = "name"
                 />
               </Section>
 
@@ -152,6 +153,7 @@ export function NewDish () {
                   type = "number"
                   placeholder = "R$00,00"
                   onChange = {event => setPrice(event.target.value)}
+                  className = "price"
                 />
               </Section>
               
