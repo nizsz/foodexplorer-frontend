@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import {useAuth} from "../../hooks/auth";
 import { useState } from "react";
+import FoodExplorerImg from "../assets/foodexplorer.png";
 
 
 export function Header({search}){
@@ -43,7 +44,7 @@ export function Header({search}){
       <FiMenu size={30} className="menu" onClick={showMe}/>
       {sidebar && <Menu active = {setSidebar} onChange = {event => {search(event.target.value)}} />}     
         <header>
-          <img src="../src/assets/foodexplorer.png" alt="foodexplorer" />
+          <img src={FoodExplorerImg} alt="foodexplorer" />
           {!admin ? <h2>Food explorer</h2> : <h2>Food explorer <span>admin</span></h2>}
         </header>
       <BsReceipt size={30} className={admin ? "hide" : "receipt"}/>
