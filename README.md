@@ -29,7 +29,7 @@
 
 FoodExplorer is an application, where an Admin User creates dishes, view details, edit and delete dishes while the common user can view the details of the dish and place the order.
 
-<strong>To create an Admin User, enter the word "admin" in the email. Example: useradmin@email.com.</stong>
+<strong>To create an Admin User, enter the word "admin" in the email. Example: useradmin@email.com.</strong>
 
 ## 🚀 Technologies
 
