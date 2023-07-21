@@ -63,17 +63,6 @@ export function DishUpdate () {
       
   };
 
-  function removeOneIngredient (deleted) {
-     setOldIngredients(oldIngredients.filter(
-       async oldIngredient => {
-        if(oldIngredient.name || oldIngredient.id !== deleted) {
-          await api.delete(`/ingredients`);
-        }
-      }
-    ))
-      
-  };
-
 
   async function handleRemoveDish () {
     const confirm = window.confirm("Você realmente deseja excluir o prato!");
@@ -127,18 +116,30 @@ export function DishUpdate () {
   
   };
 
-  function teste (event) {
-    const price = Number(event.target.value);
-    const priceInFormatBRL = price.toLocaleString('pt-br', {minimumFractionDigits: 2})
+  function onlyNumbers(event) {
+
+    const charCode = (event.which) ? event.which : event.keyCode
     
-    setPrice(priceInFormatBRL);  
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+    
+      event.preventDefault();
+    
+  };
+    
+  function coinMask(event) {
+    let valuePrice = event.target.value.replace(/\D/g,"");
+      
+    valuePrice = (valuePrice/100).toFixed(2) + "";
+    
+    valuePrice = valuePrice.replace(".", ",");
+    
+    valuePrice = valuePrice.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+    
+    valuePrice = valuePrice.replace(/(\d)(\d{3}),/g, "$1.$2,");
+    
+    event.target.value = valuePrice;
+  };
 
-  }
-
-  console.log(price.length> 2)
-
-  
-  
   useEffect(() => {
     async function fetchDish(){
       const response = await api.get(`/dishes/${params.id}`)
@@ -149,7 +150,6 @@ export function DishUpdate () {
     fetchDish()
   },[])
   
- 
 
   
   return (
@@ -239,6 +239,8 @@ export function DishUpdate () {
                   type = "number"
                   placeholder = "R$00,00"
                   onChange = {event => setPrice(event.target.value)}
+                  onKeyUp = {coinMask}
+                  onKeyPress = {onlyNumbers}
                   className = "price"
           
                 />

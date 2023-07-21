@@ -10,7 +10,7 @@ import {Header} from "../../components/Header"
 import {Button} from "../../components/Button"
 import {Footer} from "../../components/Footer"
 import {Input} from "../../components/Input"
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 import { useState } from "react";
 import { api } from "../../services/api";
@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export function NewDish () {
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+  let [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
 
@@ -46,6 +46,7 @@ export function NewDish () {
     const imagePreview = URL.createObjectURL(file);
     setAvatar(imagePreview);
   };
+
 
   async function handleAddNewDish(){
     if(!title) {
@@ -82,6 +83,32 @@ export function NewDish () {
     navigate(-1);
   };
 
+
+  function onlyNumbers(event) {
+
+    const charCode = (event.which) ? event.which : event.keyCode
+    
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+    
+      event.preventDefault();
+    
+  };
+    
+  function coinMask(event) {
+      let valuePrice = event.target.value.replace(/\D/g,"");
+  
+  valuePrice = (valuePrice/100).toFixed(2) + "";
+  
+  valuePrice = valuePrice.replace(".", ",");
+  
+  valuePrice = valuePrice.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+  
+  valuePrice = valuePrice.replace(/(\d)(\d{3}),/g, "$1.$2,");
+  
+  event.target.value = valuePrice;
+  };
+
+
   return (
     <Container>
       <Header />
@@ -101,6 +128,7 @@ export function NewDish () {
                   type="file" 
                   id="avatar"
                   onChange = {event => setAvatarFile(event.target.files[0])}
+            
                 />
               </Section>
 
@@ -150,10 +178,13 @@ export function NewDish () {
 
               <Section title = "Preço">
                 <Input 
-                  type = "number"
+                  type = "text"
                   placeholder = "R$00,00"
                   onChange = {event => setPrice(event.target.value)}
-                  className = "price"
+                  onKeyUp = {coinMask}
+                  onKeyPress = {onlyNumbers}
+                  className = "price"  
+                      
                 />
               </Section>
               
