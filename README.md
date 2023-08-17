@@ -30,10 +30,14 @@
 FoodExplorer is an application, where an Admin User creates dishes, view details, edit and delete dishes while the common user can view the details of the dish and place the order.
 
 <strong>
-  To acess as an Admin user just enter the following email and password. <br>
-  email: Admin@email.com
-  password: Admin123456
+  To acess as an Admin user just enter the following email and password. 
+  <br>
+  Email: Admin@email.com
+  <br>
+  Password: Admin123456
 </strong>
+
+<br>
 
 <strong>Project link</strong> : [FoodExplorer](https://food-explorerfront.netlify.app)
 
