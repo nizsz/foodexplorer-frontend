@@ -1,6 +1,7 @@
 import { Container } from "./styles";
 
 import {FiX, FiSearch} from "react-icons/fi";
+import { useAdmin } from "../../hooks/admin";
 import {useAuth} from "../../hooks/auth";
 import {Input} from "../Input";
 
@@ -8,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function Menu ({search, active, ...rest}) {
   const {user, signOut} = useAuth();
-  const admin = user.email.match(/admin/) == "admin" ?? "Admin";
+  const admin = useAdmin(user);
 
   const navigate = useNavigate();
 

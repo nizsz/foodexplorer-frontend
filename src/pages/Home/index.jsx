@@ -3,12 +3,12 @@ import {Header} from "../../components/Header";
 import {Footer} from "../../components/Footer";
 import {Card} from "../../components/Card";
 
-
-import { useNavigate } from "react-router-dom";
 import { Container, Content } from "./styles";
-import {useEffect, useState} from "react";
 import {api} from "../../services/api";
+
+import { useAdmin } from "../../hooks/admin";
 import { useAuth } from "../../hooks/auth";
+import {useEffect, useState} from "react";
 
 export function Home () {
   const [search, setSearch] = useState("");
@@ -16,15 +16,7 @@ export function Home () {
   const [dishesUser, setDishesUser] = useState([]);
 
   const {user} = useAuth();
-  const admin = user.email.match(/admin/) == "admin" ?? "Admin"
-  
-
-  const navigate = useNavigate();
-
-  //Acessando id do prato
-  function handleDetails(id) {
-    navigate(`/details/${id}`);
-  };
+  const admin = useAdmin(user);
 
   
   useEffect(() => {
@@ -33,16 +25,15 @@ export function Home () {
       setDishes(response.data);
 
       if(!admin) {
-        const response = await api.get(`/dishesuser?title=${search}`);
+        const res = await api.get(`/dishesuser?title=${search}`);
   
-        setDishesUser(response.data);
+        setDishesUser(res.data);
+        
       }
     }
 
     fetchDishes()
   },[search]);
-
- 
 
   
   return (

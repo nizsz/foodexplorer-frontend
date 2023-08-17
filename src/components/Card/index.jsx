@@ -4,8 +4,8 @@ import {Container,Subtract, Include} from "./styles";
 import { api } from "../../services/api";
 
 
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAdmin } from "../../hooks/admin";
 import { useAuth } from "../../hooks/auth";
 
 import {BsPencil,BsHeart} from "react-icons/bs"
@@ -15,10 +15,7 @@ export function Card ({data, ...rest}) {
   const navigate = useNavigate();
   const {user} = useAuth();
 
-  const admin = user.email.match(/admin/) == "admin" ?? "Admin"
-
-  const price = Number(data.price);
-  const priceInFormatBRL = price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+  const admin = useAdmin(user);
 
   function handleUpdate(id) {
     navigate(`/dishupdate/${id}`);
@@ -56,7 +53,7 @@ export function Card ({data, ...rest}) {
               />
               <strong>{data.title}</strong>
               <span>{data.description}</span>
-              <h3>{priceInFormatBRL}</h3>
+              <h3>{`R$${data.price}`}</h3>
             </button>
                     :
             <button className="card-user"> 
@@ -67,7 +64,7 @@ export function Card ({data, ...rest}) {
                 />
                 <strong>{data.title}</strong> 
                 <span>{data.description}</span>  
-                <h3>{priceInFormatBRL}</h3>
+                <h3>{`R$${data.price}`}</h3>
                 
               </a>
               

@@ -84,7 +84,7 @@ export const Container = styled.div`
       section {
         display: flex;
         flex-wrap: wrap;
-        width: 25rem;
+        width: 28rem;
         
       }
 

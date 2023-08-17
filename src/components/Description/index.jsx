@@ -6,7 +6,8 @@ import { Button } from "../Button"
 import { Link, useParams } from "react-router-dom";
 
 import { useEffect, useState, useRef} from "react";
-import {useAuth} from "../../hooks/auth"
+import { useAdmin } from "../../hooks/admin";
+import {useAuth} from "../../hooks/auth";
 import {api} from "../../services/api";
 
 import {FiPlus, FiMinus} from "react-icons/fi";
@@ -15,7 +16,7 @@ import {BsReceipt} from "react-icons/bs";
 export function Description (){
   const [data,setData] = useState(null);
   const {user} = useAuth();
-  const admin = user.email.match(/admin/) == "admin" ?? "Admin";
+  const admin = useAdmin(user);
 
   const carousel = useRef();
   const [width, setWidth] = useState(0);

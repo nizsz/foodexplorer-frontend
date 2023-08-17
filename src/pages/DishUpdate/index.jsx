@@ -13,10 +13,9 @@ import {Input} from "../../components/Input"
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { api } from "../../services/api";
-import { useAuth } from "../../hooks/auth";
 
 export function DishUpdate () {
   const [data, setData] = useState(null);
@@ -126,19 +125,19 @@ export function DishUpdate () {
     
   };
     
-  function coinMask(event) {
-    let valuePrice = event.target.value.replace(/\D/g,"");
-      
-    valuePrice = (valuePrice/100).toFixed(2) + "";
-    
-    valuePrice = valuePrice.replace(".", ",");
-    
-    valuePrice = valuePrice.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
-    
-    valuePrice = valuePrice.replace(/(\d)(\d{3}),/g, "$1.$2,");
-    
-    event.target.value = valuePrice;
-  };
+  const coinMasks = useCallback((event) => {
+    let value = event.target.value;
+
+    value = value.replace(/\D/g, "");
+    value = value.replace(/(\d)(\d{2})$/, "$1,$2");
+    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
+
+
+    event.target.value = value;
+    setPrice(event.target.value)
+    return event;
+
+  }, []);
 
   useEffect(() => {
     async function fetchDish(){
@@ -236,10 +235,10 @@ export function DishUpdate () {
 
               <Section title = "Preço">
                 <Input 
-                  type = "number"
+                  type = "text"
                   placeholder = "R$00,00"
-                  onChange = {event => setPrice(event.target.value)}
-                  onKeyUp = {coinMask}
+                  //onChange = {event => setPrice(event.target.value)}
+                  onKeyUp = {coinMasks}
                   onKeyPress = {onlyNumbers}
                   className = "price"
           

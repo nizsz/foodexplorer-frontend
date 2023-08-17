@@ -7,15 +7,8 @@ import { useParams } from "react-router-dom";
 
 function AuthProvider({ children }) {
   const [data,setData] = useState({});
-  const [admin, setAdmin] = useState({});
-  const [teste, setTeste] = useState()
- 
-  const params = useParams();
   
-
-
-  const isAdmin = String(admin.email).match(/admin/) == "admin";
-
+  const params = useParams();
 
   async function signIn ({email, password}) {
 
@@ -83,12 +76,6 @@ function AuthProvider({ children }) {
         user: JSON.parse(user),
         token
       })
-
-      setAdmin({
-        email: JSON.parse(user).email,
-        token
-      })
-
     };
   },[]);
 
@@ -100,7 +87,6 @@ function AuthProvider({ children }) {
       signOut, 
       updateProfile,
       user: data.user,
-      isAdmin
     }}>
       {children}
     </AuthContext.Provider>

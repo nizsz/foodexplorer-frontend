@@ -12,13 +12,13 @@ import {Footer} from "../../components/Footer"
 import {Input} from "../../components/Input"
 import { Link, } from "react-router-dom";
 
-import { useState } from "react";
-import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { api } from "../../services/api";
 
 export function NewDish () {
   const [title, setTitle] = useState("");
-  let [price, setPrice] = useState("");
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
 
@@ -64,8 +64,7 @@ export function NewDish () {
     if(newIngredient) {
       return alert("Há um ingrediente que não foi adicionado, para adicionar clique no botão de '+' caso contrário clique no botão 'X' para remover o ingrediente ")
     };
-    
-    
+
    
     const formData = new FormData();
     formData.append("title", title)
@@ -74,16 +73,26 @@ export function NewDish () {
     formData.append("category", category)
     formData.append("avatar", avatarFile)
 
-    ingredients.map(ingredient => (
-      formData.append("ingredients", ingredient)
-    ))
+    const ingredientsArray = Array.isArray(ingredients) ? ingredients : [ingredients];
+    formData.append("ingredients", JSON.stringify(ingredientsArray))
+    
+    /*
+      ingredientsArray.map(ingredient => (
+        
+        formData.append("ingredients", JSON.stringify(ingredient))
+
+        
+      ))
+
+    */
+
     
     await api.post(`/dishes`, formData);
     alert("Prato criado com sucesso");
     navigate(-1);
   };
 
-
+  
   function onlyNumbers(event) {
 
     const charCode = (event.which) ? event.which : event.keyCode
@@ -93,21 +102,21 @@ export function NewDish () {
       event.preventDefault();
     
   };
-    
-  function coinMask(event) {
-      let valuePrice = event.target.value.replace(/\D/g,"");
   
-  valuePrice = (valuePrice/100).toFixed(2) + "";
-  
-  valuePrice = valuePrice.replace(".", ",");
-  
-  valuePrice = valuePrice.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
-  
-  valuePrice = valuePrice.replace(/(\d)(\d{3}),/g, "$1.$2,");
-  
-  event.target.value = valuePrice;
-  };
+ 
+  const coinMasks = useCallback((event) => {
+    let value = event.target.value;
 
+    value = value.replace(/\D/g, "");
+    value = value.replace(/(\d)(\d{2})$/, "$1,$2");
+    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
+
+
+    event.target.value = value;
+    setPrice(event.target.value)
+    return event;
+
+  }, []);
 
   return (
     <Container>
@@ -180,8 +189,8 @@ export function NewDish () {
                 <Input 
                   type = "text"
                   placeholder = "R$00,00"
-                  onChange = {event => setPrice(event.target.value)}
-                  onKeyUp = {coinMask}
+                  //onChange = {event => setPrice(event.target.value)}
+                  onKeyUp = {coinMasks}
                   onKeyPress = {onlyNumbers}
                   className = "price"  
                       
@@ -199,6 +208,7 @@ export function NewDish () {
             <Button 
               title = "Salvar prato" 
               onClick = {handleAddNewDish}
+              //onClick = {updateDish}
             />
           </Form>
         </main>

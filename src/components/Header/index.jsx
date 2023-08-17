@@ -8,14 +8,18 @@ import {BsReceipt} from "react-icons/bs";
 import {FiLogOut, FiMenu} from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
+import FoodExplorerImg from "../../assets/foodexplorer.png";
 import {useAuth} from "../../hooks/auth";
 import { useState } from "react";
-import FoodExplorerImg from "../../assets/foodexplorer.png";
+
+import {useAdmin} from "../../hooks/admin";
 
 
 export function Header({search}){
   const {user, signOut} = useAuth();
-  const admin = user.email.match(/admin/) == "admin" ?? "Admin"
+  //const admin = user.email.match(/admin/) == "admin" ?? "Admin";
+
+  const admin = useAdmin(user);
 
   const [sidebar, setSidebar] = useState(false)
 
