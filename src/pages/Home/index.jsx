@@ -10,6 +10,8 @@ import { useAdmin } from "../../hooks/admin";
 import { useAuth } from "../../hooks/auth";
 import {useEffect, useState} from "react";
 
+import BackgroundImg from "../../assets/backgroundImage.png"
+
 export function Home () {
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState([]);
@@ -43,7 +45,7 @@ export function Home () {
       <main>
         <Content>
 
-        <img src="./src/assets/backgroundImage.png" alt="" />
+        <img src={BackgroundImg} alt="" />
        
           
         <Category title = "Refeições">

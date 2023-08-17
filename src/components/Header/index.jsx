@@ -17,8 +17,6 @@ import {useAdmin} from "../../hooks/admin";
 
 export function Header({search}){
   const {user, signOut} = useAuth();
-  //const admin = user.email.match(/admin/) == "admin" ?? "Admin";
-
   const admin = useAdmin(user);
 
   const [sidebar, setSidebar] = useState(false)
