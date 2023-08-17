@@ -30,7 +30,7 @@
 FoodExplorer is an application, where an Admin User creates dishes, view details, edit and delete dishes while the common user can view the details of the dish and place the order.
 
 <strong>
-  To acess as an Admin user just enter the following email and password. 
+  To acess as an Admin user just enter the following email and password. <br>
   email: Admin@email.com
   password: Admin123456
 </strong>
