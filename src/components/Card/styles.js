@@ -52,6 +52,9 @@ export const Container = styled.div`
     }
 
     span {
+      max-width: 25rem;
+      overflow-wrap: break-word;
+
       font-size: 1.4rem;
       font-weight: 400;
 
