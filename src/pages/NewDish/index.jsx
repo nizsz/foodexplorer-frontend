@@ -57,6 +57,10 @@ export function NewDish () {
       return alert("Por favor selecione uma categoria para o prato")
     };
 
+    if(!price) {
+      return alert("Por favor insira uma descrição para o prato")
+    };
+
     if(!description) {
       return alert("Por favor insira uma descrição para o prato")
     };
