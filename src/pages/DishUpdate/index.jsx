@@ -64,7 +64,7 @@ export function DishUpdate () {
 
 
   async function handleRemoveDish () {
-    const confirm = window.confirm("Você realmente deseja excluir o prato!");
+    const confirm = window.confirm("Você realmente deseja excluir o prato ?");
 
     if(confirm) {
       await api.delete(`/dishes/${params.id}`);
